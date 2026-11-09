@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>遥感 RRSIS 论文索引</title>
+<meta name="description" content="收录采用视觉语言基础模型 + SAM 结构的遥感 / RRSIS 方向论文。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<div id="demo-banner" class="demo-banner" hidden>
+  <div class="wrap"><span id="demo-banner-text"></span></div>
+</div>
+
+<div class="page">
+  <header class="site-header">
+    <div class="wrap">
+      <h1 class="site-title">遥感 RRSIS 论文索引</h1>
+      <p class="site-subtitle">收录采用「视觉语言基础模型 + SAM」结构的遥感 / 指代表达分割高质量论文。</p>
+      <section class="stats" id="stats" aria-label="收录统计">
+        <div id="stats-grid" class="stats-grid"></div>
+        <div id="stats-inline" class="stats-inline"></div>
+      </section>
+    </div>
+  </header>
+
+  <div id="toolbar" class="toolbar">
+    <div class="toolbar-inner">
+      <div class="search-wrap">
+        <label class="sr-only" for="search">搜索论文</label>
+        <input id="search" class="search-input" type="search" placeholder="搜索标题、作者、标签或点评" aria-label="搜索论文" aria-controls="paper-results" autocomplete="off" spellcheck="false">
+      </div>
+      <div id="chips" class="chips" role="group" aria-label="筛选标签"></div>
+    </div>
+  </div>
+
+  <main id="main" tabindex="-1">
+    <div id="status" class="status" aria-live="polite"></div>
+    <div id="paper-results"></div>
+    <div id="empty-filter" class="empty-filter" hidden>
+      <p class="empty-filter-text">没有符合条件的论文。</p>
+      <div class="empty-filter-actions">
+        <button type="button" class="btn" id="clear-search">清空搜索</button>
+        <button type="button" class="btn" id="reset-filter">重置筛选</button>
+      </div>
+    </div>
+    <div id="empty-library" class="empty-library" hidden>
+      <p class="empty-lib-line">当前尚未收录任何论文。</p>
+      <p class="empty-lib-line empty-lib-hint">请在 <code>data/papers.js</code> 的 <code>papers</code> 数组中添加条目<span class="dot"> · </span>刷新页面即可生效。</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">数据与展示分离<span class="dot"> · </span>纯静态<span class="dot"> · </span>本地双击可用</div>
+  </footer>
+</div>
+
+<script src="data/papers.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
