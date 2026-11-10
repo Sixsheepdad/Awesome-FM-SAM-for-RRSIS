@@ -43,7 +43,7 @@
 | `venueType` | 是 | `conference` / `journal` / `preprint`，内部字段，不渲染成可见文本 |
 | `tags` | 是 | 字符串数组，**必须全部取自 `tagWhitelist`** |
 | `comment` | 是 | 中文一句话点评，≤38 个中文字，讲清如何用 VLM+SAM 结构 |
-| `paperUrl` | 是 | `https://` 论文链接 |
+| `paperUrl` | 是 | `https://` 论文链接；**点击论文标题**或条目底部「论文」均在新标签页打开此地址 |
 | `codeUrl` | 否 | `https://` 或 `null`；为 `null` 时显示「代码未公开」 |
 | `note` | 否 | 短备注，渲染成 `注 · ` 标签 |
 | `demo` | 否 | 仅记录级；示意条目为 `true` |

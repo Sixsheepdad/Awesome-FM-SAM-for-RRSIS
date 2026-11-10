@@ -155,12 +155,26 @@
     var body = document.createElement('div');
     body.className = 'paper-body';
 
-    // 标题行：标题 + 示意标记（demo 驱动）+ 徽章（venue + 空格 + year，年份不切 mono）
+    // 标题行：标题（可点击跳原文）+ 示意标记（demo 驱动）+ 徽章（venue + 空格 + year，年份不切 mono）
     var head = document.createElement('div');
     head.className = 'paper-head';
     var h3 = document.createElement('h3');
     h3.className = 'paper-title';
-    h3.textContent = p.title;
+    if (isHttpsUrl(p.paperUrl)) {
+      var titleLink = document.createElement('a');
+      titleLink.className = 'paper-title-link';
+      titleLink.textContent = p.title;
+      titleLink.href = p.paperUrl;
+      titleLink.target = '_blank';
+      titleLink.rel = 'noopener noreferrer';
+      var linkHint = document.createElement('span');
+      linkHint.className = 'sr-only';
+      linkHint.textContent = '（在新标签页打开论文页面）';
+      titleLink.appendChild(linkHint);
+      h3.appendChild(titleLink);
+    } else {
+      h3.textContent = p.title;
+    }
     head.appendChild(h3);
     if (p.demo) {
       var mark = document.createElement('span');
