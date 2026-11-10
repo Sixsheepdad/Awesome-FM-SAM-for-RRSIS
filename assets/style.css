@@ -279,6 +279,29 @@ main{ max-width:var(--page-max); margin:0 auto; padding:32px 24px 64px; }
 .paper-links a:hover{ color:var(--accent-hover); text-decoration:underline; }
 .no-code,.link-plain{ color:var(--text-3); }
 
+/* 模型整体图：默认（<900px）为整宽置底的普通块级；≥900px 两列见下方断点 */
+.paper-figure{
+  margin:16px 0 0;
+  padding:8px;
+  border:1px solid var(--line-2);
+  background-color:var(--surface);
+  transition:border-color 120ms;
+}
+.paper-figure[hidden]{ display:none; }
+.paper-figure a{ display:block; cursor:zoom-in; }
+.paper-figure img{
+  display:block;
+  max-width:100%; height:auto;
+  object-fit:contain;
+}
+.paper-figure figcaption{
+  margin-top:8px;
+  font-size:12px;
+  color:var(--text-3);
+  text-align:left;
+  font-family:var(--font-sans);
+}
+
 /* 空状态 */
 .empty-filter,.empty-library{ margin:24px 0; max-width:var(--content-max); }
 .empty-filter[hidden],.empty-library[hidden]{ display:none; }
@@ -306,6 +329,20 @@ main{ max-width:var(--page-max); margin:0 auto; padding:32px 24px 64px; }
 }
 @media (hover:hover){
   .paper-title-link:hover{ color:var(--accent-hover); text-decoration:underline; }
+  .paper-figure:hover{ border-color:var(--line-3); }
+}
+
+/* 两列只在 ≥900px 启用：768–899px 正文列会被压到约 300px，阅读性太差 */
+@media (min-width:900px){
+  .paper-body--with-fig{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 240px;
+    column-gap:24px;
+    align-items:start;
+  }
+  .paper-body--with-fig .paper-head{ grid-column:1 / -1; }
+  .paper-body--with-fig .paper-text{ grid-column:1; grid-row:2; min-width:0; }
+  .paper-body--with-fig .paper-figure{ grid-column:2; grid-row:2; align-self:start; margin-top:0; }
 }
 
 /* 断点 768 */
@@ -332,6 +369,7 @@ main{ max-width:var(--page-max); margin:0 auto; padding:32px 24px 64px; }
   .stats-inline{ display:block; }
   .paper{ grid-template-columns:24px 1fr; gap:12px; }
   .paper::before{ display:none; }
+  .paper-figure{ padding:6px; margin-top:16px; }
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -339,7 +377,7 @@ main{ max-width:var(--page-max); margin:0 auto; padding:32px 24px 64px; }
 }
 @media (forced-colors: active){
   .badge,.chip,.method-tag,.demo-mark,.search-input,.btn,
-  .toolbar,.demo-banner,.group-title,.paper-body{
+  .toolbar,.demo-banner,.group-title,.paper-body,.paper-figure{
     border:1px solid CanvasText;
   }
 }

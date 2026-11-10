@@ -38,6 +38,11 @@
     }
   }
 
+  // 站内图片相对路径白名单：只接受 assets/figures/<id>.png；不复用 isHttpsUrl（那是绝对 https）。
+  function isFigureSrc(s) {
+    return typeof s === 'string' && /^assets\/figures\/[A-Za-z0-9_-]+\.png$/.test(s);
+  }
+
   // 逐条校验；坏记录 console.warn 后跳过，保证页面不崩（S6）。
   function normalize(p, seen) {
     if (!p || typeof p !== 'object' || Array.isArray(p)) {
@@ -86,11 +91,27 @@
     var note = (typeof p.note === 'string' && p.note.trim()) ? p.note : null;
     var demo = p.demo === true;
 
+    // figure 选填：任一字段非法则 warn 后降级为 null（该条按无图渲染），不拖垮整条记录。
+    var figure = null;
+    if (p.figure !== undefined && p.figure !== null) {
+      var f = p.figure;
+      if (!f || typeof f !== 'object' || Array.isArray(f) ||
+          !isFigureSrc(f.src) ||
+          typeof f.alt !== 'string' || !f.alt.trim() ||
+          !Number.isInteger(f.w) || f.w <= 0 ||
+          !Number.isInteger(f.h) || f.h <= 0) {
+        warn('figure 非法，按无图处理：' + p.id, p);
+      } else {
+        figure = { src: f.src, alt: f.alt, w: f.w, h: f.h };
+      }
+    }
+
     seen[p.id] = true;
     return {
       id: p.id, title: p.title, authors: p.authors.slice(), year: p.year,
       venue: p.venue, venueType: p.venueType, tags: tags, comment: p.comment,
-      paperUrl: p.paperUrl, codeUrl: codeUrl, note: note, demo: demo
+      paperUrl: p.paperUrl, codeUrl: codeUrl, note: note, demo: demo,
+      figure: figure
     };
   }
 
@@ -141,6 +162,45 @@
 
   function pad2(n) { return n < 10 ? '0' + n : String(n); }
 
+  // 模型整体图：figure > a > img + sr-only 提示，figcaption 用 makeDot 拼中性分隔符。
+  // img 加载失败时隐藏 figure 并移除 body 两列类，使条目退回单列。
+  function makeFigure(f, body) {
+    var fig = document.createElement('figure');
+    fig.className = 'paper-figure';
+
+    var a = document.createElement('a');
+    a.href = f.src;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+
+    var img = document.createElement('img');
+    img.addEventListener('error', function () {
+      fig.hidden = true;
+      body.classList.remove('paper-body--with-fig');
+    });
+    img.src = f.src;
+    img.alt = f.alt;
+    img.width = f.w;
+    img.height = f.h;
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    a.appendChild(img);
+
+    var hint = document.createElement('span');
+    hint.className = 'sr-only';
+    hint.textContent = '（在新标签页查看大图）';
+    a.appendChild(hint);
+    fig.appendChild(a);
+
+    var cap = document.createElement('figcaption');
+    cap.appendChild(makeTextNode('模型整体图'));
+    cap.appendChild(makeDot());
+    cap.appendChild(makeTextNode('点击查看大图'));
+    fig.appendChild(cap);
+
+    return fig;
+  }
+
   function renderPaper(p, num) {
     var art = document.createElement('article');
     art.className = 'paper';
@@ -154,6 +214,16 @@
 
     var body = document.createElement('div');
     body.className = 'paper-body';
+
+    // 无图：段落直接挂 body，维持原有 DOM 顺序（零回归）。
+    // 有图：body 加两列类，段落收进 .paper-text（左列），figure 放右列。
+    var hasFig = !!p.figure;
+    var container = body;
+    if (hasFig) {
+      body.classList.add('paper-body--with-fig');
+      container = document.createElement('div');
+      container.className = 'paper-text';
+    }
 
     // 标题行：标题（可点击跳原文）+ 示意标记（demo 驱动）+ 徽章（venue + 空格 + year，年份不切 mono）
     var head = document.createElement('div');
@@ -188,17 +258,20 @@
     head.appendChild(badge);
     body.appendChild(head);
 
+    // head 之后挂 .paper-text，保证 DOM 顺序 head → text → figure（<900px 时图整宽置底）。
+    if (hasFig) body.appendChild(container);
+
     // 作者行：只写作者，禁用 ·，允许折行不截断
     var authorsEl = document.createElement('p');
     authorsEl.className = 'paper-authors';
     appendAuthors(authorsEl, p.authors);
-    body.appendChild(authorsEl);
+    container.appendChild(authorsEl);
 
     // 正文点评：16px 任何断点不缩
     var commentEl = document.createElement('p');
     commentEl.className = 'paper-comment';
     commentEl.textContent = p.comment;
-    body.appendChild(commentEl);
+    container.appendChild(commentEl);
 
     // note -> 「注 · 」标签
     if (p.note) {
@@ -207,7 +280,7 @@
       noteEl.appendChild(makeTextNode('注'));
       noteEl.appendChild(makeDot());
       noteEl.appendChild(makeTextNode(p.note));
-      body.appendChild(noteEl);
+      container.appendChild(noteEl);
     }
 
     // 方法标签
@@ -220,7 +293,7 @@
         s.textContent = t;
         tagsEl.appendChild(s);
       });
-      body.appendChild(tagsEl);
+      container.appendChild(tagsEl);
     }
 
     // 链接行「论文 · 代码」；codeUrl 为 null 时保留位置渲染「代码未公开」纯文本
@@ -236,7 +309,9 @@
       nc.textContent = '代码未公开';
       linksEl.appendChild(nc);
     }
-    body.appendChild(linksEl);
+    container.appendChild(linksEl);
+
+    if (hasFig) body.appendChild(makeFigure(p.figure, body));
 
     art.appendChild(idxCol);
     art.appendChild(body);

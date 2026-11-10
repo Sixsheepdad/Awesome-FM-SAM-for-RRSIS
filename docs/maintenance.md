@@ -40,6 +40,7 @@
 | `paperUrl` | 是 | `https://` 论文链接；**点击论文标题**或条目底部「论文」均在新标签页打开此地址 |
 | `codeUrl` | 否 | `https://` 或 `null`；为 `null` 时显示「代码未公开」 |
 | `note` | 否 | 短备注，渲染成 `注 · ` 标签 |
+| `figure` | 否 | 对象 `{ src, alt, w, h }`：`src` 为站内相对路径 `assets/figures/<id>.png`，`alt` 为中文结构描述，`w`/`h` 为原始像素宽高（防布局跳动）；渲染成条目右侧的模型整体图，点击可在新标签页查看大图。缺失或非法时该条目不渲染图 |
 | `demo` | 否 | 仅记录级；示意条目为 `true` |
 
 不设机构（affiliation）字段；作者行只写作者，不写机构、venue 或类型。
@@ -49,11 +50,12 @@
 1. 打开 `data/papers.js`。
 2. 往 `papers` 数组**最前面**加一条对象即可置顶（按年份倒序分组，组内保持数组原顺序）。
 3. 按字段表填齐必填字段；`tags` 只能用 `tagWhitelist` 里已有的标签，确需新标签时先加进 `tagWhitelist`。
-4. 保存并刷新 `index.html`。
+4. 配图（可选）：从论文 PDF 裁出模型整体架构图，存为 `assets/figures/<id>.png`，保留原始比例、不要裁进页眉或正文；在记录里填 `figure` 的 `src`/`alt`/`w`/`h`（`w`/`h` 为图片原始像素宽高）。不填或填错则该条目不渲染图，不影响其它内容。
+5. 保存并刷新 `index.html`。
 
 ## 当前收录状态
 
-2026-11-09 已清除全部 `demo` 版式示意条目；2026-11-10 新增 ECCV 2026 的 CROSS，现有 **5 篇真实收录**（CROSS、RSRefSeg、RSRefSeg 2、RS2-SAM2、Training-Free Text-Based RS Segmentation）。演示 banner 由 `papers.some(p => p.demo)` 驱动，无 demo 记录时自动隐藏。
+2026-11-09 已清除全部 `demo` 版式示意条目；2026-11-10 新增 ECCV 2026 的 CROSS，现有 **5 篇真实收录**（CROSS、RSRefSeg、RSRefSeg 2、RS2-SAM2、Training-Free Text-Based RS Segmentation），且 5 篇均已配模型整体图。演示 banner 由 `papers.some(p => p.demo)` 驱动，无 demo 记录时自动隐藏。
 
 若日后需要临时预览版式，可给条目加 `demo: true`（并填 `note` 说明非真实收录），删掉即恢复；不要为示意条目虚构会议收录或方法结论。
 
