@@ -27,13 +27,26 @@
  * 收录标准：仅限遥感 / RRSIS 方向，且采用「视觉语言基础模型 + SAM / SAM2」结构。
  *       「视觉语言基础模型」指经图文联合预训练的跨模态模型（CLIP / BEiT-3 / Qwen-VL 等），
  *       纯文本编码器（BERT / RoBERTa）或纯视觉骨干（ResNet / RS-VFM）不计入。
- *       2026-11-09 已清除 3 条 demo 版式示意条目，当前 4 条均为真实收录。
+ *       2026-11-09 已清除 3 条 demo 版式示意条目；2026-11-10 收录 ECCV 2026 的 CROSS，
+ *       当前 5 条均为真实收录。
  */
 window.PAPERS = {
   schemaVersion: 1,
-  updated: "2026-11-09",
-  tagWhitelist: ["VLM", "SAM", "SAM 2", "适配器", "提示学习", "遥感", "RRSIS", "开放词汇", "文本条件", "指代分割", "CLIP", "BEiT-3", "训练无关"],
+  updated: "2026-11-10",
+  tagWhitelist: ["VLM", "SAM", "SAM 2", "适配器", "提示学习", "遥感", "RRSIS", "开放词汇", "文本条件", "指代分割", "CLIP", "BEiT-3", "SigLIP 2", "训练无关"],
   papers: [
+    {
+      id: "luo2026cross",
+      title: "CROSS: Cascaded Distillation and Dual-Constraint Grounding for Remote Sensing Referring Segmentation",
+      authors: ["Tingzhang Luo", "Ruizhong Liu", "Yichao Liu", "Cheng Fan", "Yu Liu", "Jianyuan Guo"],
+      year: 2026,
+      venue: "ECCV",
+      venueType: "conference",
+      tags: ["RRSIS", "SigLIP 2", "SAM 2"],
+      comment: "SigLIP 2 生成稠密提示交由 SAM 2 解码，SAM 2 几何亲和再反蒸馏回 VLM 中间层。",
+      paperUrl: "https://media.eventhosts.cc/Conferences/ECCV2026/pdfs/9662.pdf",
+      codeUrl: "https://github.com/Clarence-CV/CROSS"
+    },
     {
       id: "chen2025rsrefseg",
       title: "RSRefSeg: Referring Remote Sensing Image Segmentation with Foundation Models",

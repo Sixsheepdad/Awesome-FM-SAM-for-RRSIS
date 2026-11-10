@@ -12,7 +12,7 @@
 
 只收录**遥感 / RRSIS（Referring Remote Sensing Image Segmentation）方向、且采用「视觉语言基础模型（VLM）+ SAM / SAM2」结构**的高质量论文。通用视觉工作、与遥感无关、或未使用 VLM+SAM 结构的工作一律不收。
 
-判定口径：**VLM 指经图文联合预训练的跨模态模型**（CLIP、BEiT-3、Qwen-VL、LLaVA、Grounding DINO 等）；纯文本编码器（BERT / RoBERTa）、纯视觉骨干（ResNet / RS-VFM）、文生图扩散模型均不计入。SAM 须作为分割骨干实际参与，仅在引言中提及不算。数据集/通用地球观测基础模型若非专门解决 RRSIS，也不收。
+判定口径：**VLM 指经图文联合预训练的跨模态模型**（CLIP、BEiT-3、SigLIP 2、Qwen-VL、LLaVA、Grounding DINO 等）；纯文本编码器（BERT / RoBERTa）、纯视觉骨干（ResNet / RS-VFM）、文生图扩散模型均不计入。SAM 须作为分割骨干实际参与，仅在引言中提及不算。数据集/通用地球观测基础模型若非专门解决 RRSIS，也不收。
 
 ## 本地打开
 
@@ -53,7 +53,7 @@
 
 ## 当前收录状态
 
-2026-11-09 已清除全部 `demo` 版式示意条目，现有 **4 篇真实收录**（RSRefSeg、RSRefSeg 2、RS2-SAM2、Training-Free Text-Based RS Segmentation）。演示 banner 由 `papers.some(p => p.demo)` 驱动，无 demo 记录时自动隐藏。
+2026-11-09 已清除全部 `demo` 版式示意条目；2026-11-10 新增 ECCV 2026 的 CROSS，现有 **5 篇真实收录**（CROSS、RSRefSeg、RSRefSeg 2、RS2-SAM2、Training-Free Text-Based RS Segmentation）。演示 banner 由 `papers.some(p => p.demo)` 驱动，无 demo 记录时自动隐藏。
 
 若日后需要临时预览版式，可给条目加 `demo: true`（并填 `note` 说明非真实收录），删掉即恢复；不要为示意条目虚构会议收录或方法结论。
 
