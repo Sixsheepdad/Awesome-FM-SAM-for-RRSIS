@@ -299,15 +299,6 @@ main{ max-width:var(--page-max); margin:0 auto; padding:32px 24px 64px; }
 .empty-lib-line.empty-lib-hint{ font-size:14px; color:var(--text-3); }
 .empty-library code{ font-family:var(--font-mono); font-size:13px; }
 
-/* 页脚 */
-.site-footer{
-  border-top:1px solid var(--line-2);
-  padding:24px 0 48px;
-  font-size:13px;
-  color:var(--text-3);
-  line-height:1.65;
-}
-
 /* hover 规则用 @media 包住：<480 取消竖线 */
 @media (min-width:480px){
   .paper:hover::before{ background-color:var(--accent); }
