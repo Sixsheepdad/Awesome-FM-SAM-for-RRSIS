@@ -1,6 +1,6 @@
 # 论文筛选规则（FM-SAM / RRSIS 周检索唯一口径）
 
-> 版本 **v1.0** · 生效日期 **2026-11-13** · 适用仓库 `Awesome-FM-SAM-for-RRSIS`
+> 版本 **v1.1** · 生效日期 **2026-11-13** · 适用仓库 `Awesome-FM-SAM-for-RRSIS`
 
 本文件是本项目**每周一自动检索**以及任何新增论文收录的**唯一判定依据**。每次检索开始前必须完整读取本文件；条款冲突时以本文件为准，不得凭标题、二手摘要或模型印象放宽。宁可报告「本次 0 篇通过」，也不凑数。
 
@@ -34,54 +34,53 @@
 - 报告中必须用一句话写清耦合方式（即新增条目 `comment` 字段的内容）。
 - **排除**：VLM 与 SAM 并列、彼此无信息流（两个独立分支简单拼接/投票）。
 
-## R5 发表门槛（必须 · 顶刊 / 顶会白名单）
+## R5 发表门槛（必须 · 期刊 IF > 6 或顶会正会）
 
-**期刊**（正刊卷期，IF ≥ 8 或领域公认顶刊）：
+**期刊 —— 只按影响因子判断，不设期刊名单、不点名排除任何期刊**：
 
-| 允许 | 规范简称 |
-| --- | --- |
-| IEEE Transactions on Geoscience and Remote Sensing | IEEE TGRS |
-| IEEE Transactions on Image Processing | IEEE TIP |
-| IEEE Transactions on Pattern Analysis and Machine Intelligence | TPAMI |
-| ISPRS Journal of Photogrammetry and Remote Sensing | ISPRS JPRS |
+- 必须是**正式期刊的正刊卷期**（有卷/期/页码或 DOI；非增刊、非 workshop 论文集）。
+- **最新一期官方公布的影响因子必须严格大于 6（IF > 6）**；IF = 6 或更低不通过。
+- IF 数值与公布年份须有可核验来源（期刊官网、出版社页面、JCR / Clarivate 等），按 R6 记录来源 URL；核不到 IF 数值 → 「待人工确认」，不自动通过。
+- 不再设白名单，也不再点名排除 JSTARS / IEEE GRSL / JAG / Remote Sensing (MDPI) 等：只要该刊正刊 IF > 6 即满足 R5（例如 JAG 若当前 IF > 6 也可收录）。
+- 下列期刊只是**检索线索，不构成限制**：IEEE TGRS、IEEE TIP、TPAMI、ISPRS JPRS、JAG、Remote Sensing of Environment 等。
 
-**会议**（正会 main track，非 workshop / 非附属研讨会）：CVPR、ICCV、ECCV、AAAI。
+**会议**（正会 main track，非 workshop / 非附属研讨会）：CVPR、ICCV、ECCV、AAAI。白名单之外的顶会（NeurIPS / ICML / IJCAI / ACM MM 等）→ 「待人工确认」，不自动通过。
 
-**明确排除**：JSTARS、IEEE GRSL、JAG（International Journal of Applied Earth Observation and Geoinformation）、Remote Sensing (MDPI)、IGARSS、arXiv / 其它预印本、workshop / challenge 论文、IF < 8 的期刊、非正刊的增刊。
-
-- 预印本即使内容完全符合也不收；若作者主页或官方录用清单明确标注已被上述顶刊/顶会接收 → 列入**「待人工确认」**，不自动通过。
-- 白名单之外的顶会（NeurIPS / ICML / IJCAI / ACM MM 等）与高 IF 综合性期刊 → 一律「待人工确认」，不自动通过。
+**仍然排除**：arXiv / 其它预印本、IGARSS 等 symposium、workshop / challenge 论文、非正刊增刊、IF ≤ 6 的期刊。
+- 预印本即使内容完全符合也不收；若作者主页或官方录用清单明确标注已被 IF > 6 期刊或上述顶会接收 → 列入**「待人工确认」**，不自动通过。
 - 会议年份以**正式会议年份**为准，不用 arXiv 投稿年份。
 
 ## R6 证据核验（必须）
 
 - 每篇候选必须**独立核验真实发表处与年份**：DBLP、OpenReview、会议官方 accepted papers 列表、期刊官网文章页、doi.org、作者主页、arXiv 的 `journal-ref` / `comments` 字段。报告中写出核验来源 URL。
-- **禁止只凭**：IEEE Xplore 搜索结果片段（常把 JSTARS / GRSL 误标为 TGRS）、搜索引擎摘要、公众号/博客/知乎转载、其它论文列表仓库的二手标注。
+- **期刊候选额外必须核验 IF 数值与公布年份**：来源限期刊官网、出版社页面、JCR / Clarivate 等官方渠道，报告中写成 `IF = X（YYYY 年，来源 URL）`。禁止凭印象、旧数据或二手博客填 IF；核不到 → 「待人工确认」，不通过。
+- **禁止只凭**：IEEE Xplore 搜索结果片段（venue 常被误标）、搜索引擎摘要、公众号/博客/知乎转载、其它论文列表仓库的二手标注。
 - 必须拿到摘要或 PDF 全文核对 R2 / R3 / R4；只有标题、无法核实方法结构 → 「待人工确认」，不通过。
 
 ## R7 去重与时间窗（必须）
 
-- **检索窗口**：上次周检之后新公开的论文；重点覆盖最近 12 个月内发表或录用的顶刊/顶会正刊论文。
+- **检索窗口**：上次周检之后新公开的论文；重点覆盖最近 12 个月内发表或录用的 IF > 6 期刊论文与顶会正会论文。
 - 对照 `data/papers.js` 的 `id` / `title` / `paperUrl`（含 arXiv id、DOI）去重，已收录条目不再上报。
 - 同一工作的不同版本（arXiv v1/v2、会议版 vs 期刊扩展版）只报一次并注明版本关系。
-- **检索式至少覆盖**（中英文都试）：`RRSIS` / `referring remote sensing image segmentation` / `remote sensing referring expression comprehension + segmentation` / `text-guided · open-vocabulary · remote sensing + SAM / SAM 2 + CLIP / VLM / foundation model`，并与白名单期刊/会议名及当年年份组合检索；另检索顶会官方录用列表与 TGRS / TIP / TPAMI / ISPRS JPRS 的近期目录。
+- **检索式至少覆盖**（中英文都试）：`RRSIS` / `referring remote sensing image segmentation` / `remote sensing referring expression comprehension + segmentation` / `text-guided · open-vocabulary · remote sensing + SAM / SAM 2 + CLIP / VLM / foundation model`，并与顶会名及当年年份组合检索；另检索顶会官方录用列表，并浏览遥感 / 影像 / 计算机视觉方向 **IF > 6** 期刊的近期目录（含但不限于 IEEE TGRS、IEEE TIP、TPAMI、ISPRS JPRS、JAG、RSE）。
 
 ## 输出格式（每次周检必须遵守）
 
-1. 开头写明：`规则版本 v1.0 · 检索日期 · 检索窗口 · 使用的检索式关键词`。
-2. **通过清单**：每条列 标题 / 作者 / 年份 / venue / 核验来源 URL / VLM 组件 / SAM 组件 / 耦合方式一句话 / 论文链接 / 代码链接 / R1–R7 逐条 ✅ 或 ❌（**全 ✅ 才能进入通过清单**）。
-3. **排除清单**：每条列 标题 + 触发的条款编号 + 一句话理由（例：`R5 不通过：实为 IGARSS 2025 workshop，非顶会正会`）。
-4. **待人工确认**：列明原因与信息缺口。
+1. 开头写明：`规则版本 v1.1 · 检索日期 · 检索窗口 · 使用的检索式关键词`。
+2. **通过清单**：每条列 标题 / 作者 / 年份 / venue / 核验来源 URL / **期刊论文须列 `IF 数值 + 公布年份 + 来源 URL`，会议论文注明「顶会正会，无需 IF」** / VLM 组件 / SAM 组件 / 耦合方式一句话 / 论文链接 / 代码链接 / R1–R7 逐条 ✅ 或 ❌（**全 ✅ 才能进入通过清单**）。
+3. **排除清单**：每条列 标题 + 触发的条款编号 + 一句话理由（例：`R5 不通过：期刊 IF 5.4（≤ 6）`；`R5 不通过：IGARSS 2025 symposium，非顶会正会`）。
+4. **待人工确认**：列明原因与信息缺口（含 IF 数值核不到的情形）。
 5. 结尾汇总：`通过 N / 排除 M / 待确认 K`，并说明本次是否改动了仓库文件。
 
 ## 落地约束
 
 - 周检结果的处理程度以自动化任务配置为准；当前配置为**「自动入库并推送」**（每周一 09:30 的「FM-SAM 论文周检 · 自动入库」）。日后若改为「仅报告」，只需改自动化配置，本规则不变。
 - 若配置为「自动入库」，新增条目须按 `docs/maintenance.md` 字段表填写齐全，并在报告中给出新增 `id`；模型整体图无法自动生成时留空 `figure`，不得伪造图片。
-- 本规则任何修改须在下方变更记录登记版本、日期与原因；自动化任务无需改动，因为每次运行都会重新读取本文件。
+- 规则口径以本文件为准，自动化任务每次运行都会重新读取；修改规则时只需同步检查任务描述里的检索范围措辞是否仍准确，并在下方变更记录登记版本、日期与原因。
 
 ## 变更记录
 
 | 版本 | 日期 | 说明 |
 | --- | --- | --- |
 | v1.0 | 2026-11-13 | 初始版本：固化 VLM+SAM 结构判定、顶刊顶会白名单（TGRS/TIP/TPAMI/ISPRS JPRS + CVPR/ICCV/ECCV/AAAI）、证据核验与周检输出格式。存量 5 篇保留但不作为放宽先例。 |
+| v1.1 | 2026-11-13 | 按维护者要求放宽期刊门槛：`IF ≥ 8` 改为 **`IF > 6`**，且**取消期刊白名单与点名排除项**，只按 IF 判断；JAG 等此前排除的期刊只要当前 IF > 6 即可收录。新增 R6 的 IF 数值与年份核验要求、输出格式中的 IF 字段；会议仍限 CVPR/ICCV/ECCV/AAAI 正会。 |
