@@ -9,7 +9,6 @@
   --line-3:#C9D4E0;
   --accent:#185FA5;
   --accent-hover:#0C447C;
-  --chip-active:#E6F1FB;
   --tag-bg:#F2F7FC;
   --page-max:1120px;
   --content-max:960px;
@@ -105,9 +104,9 @@ body{
 .toolbar-inner{
   max-width:var(--page-max); margin:0 auto;
   padding:12px 24px;
-  display:flex; align-items:center; gap:16px;
+  display:flex; align-items:center;
 }
-.search-wrap{ flex:0 0 280px; }
+.search-wrap{ width:420px; max-width:100%; }
 .search-input{
   width:100%; min-height:44px;
   -webkit-appearance:none; appearance:none;
@@ -118,33 +117,6 @@ body{
   border-radius:2px;
   padding:8px 12px;
 }
-.chips{ flex:1 1 auto; display:flex; flex-wrap:wrap; gap:8px; }
-.chip{
-  display:inline-flex; align-items:center; gap:8px;
-  min-height:44px; min-width:44px;
-  padding:8px 12px;
-  font-family:var(--font-sans); font-size:13px;
-  color:var(--text-2);
-  background-color:var(--surface);
-  border:1px solid var(--line-2);
-  cursor:pointer;
-  transition:color 120ms, border-color 120ms, background-color 120ms;
-}
-.chip-label{ font-weight:400; }
-.chip-count{
-  font-family:var(--font-mono); font-size:12px;
-  font-variant-numeric:tabular-nums;
-  color:var(--text-3);
-}
-.chip[aria-pressed="true"]{
-  border-color:var(--text-2);
-  background-color:var(--chip-active);
-}
-.chip[aria-pressed="true"] .chip-label{
-  font-weight:500;
-  text-decoration:underline;
-}
-.chip:not([aria-pressed="true"]):hover{ border-color:var(--line-3); }
 
 /* 主区 */
 main{ max-width:var(--page-max); margin:0 auto; padding:32px 24px 64px; }
@@ -348,8 +320,6 @@ main{ max-width:var(--page-max); margin:0 auto; padding:32px 24px 64px; }
 /* 断点 768 */
 @media (max-width:767px){
   .toolbar{ position:static; }
-  .toolbar-inner{ flex-direction:column; align-items:stretch; gap:12px; }
-  .search-wrap,.chips{ flex:0 0 auto; }
   .site-header{ padding:48px 0 24px; }
   .stats{ margin-top:32px; }
   .stats-grid{ gap:16px; }
@@ -376,7 +346,7 @@ main{ max-width:var(--page-max); margin:0 auto; padding:32px 24px 64px; }
   *,*::before,*::after{ transition:none !important; animation:none !important; }
 }
 @media (forced-colors: active){
-  .badge,.chip,.method-tag,.demo-mark,.search-input,.btn,
+  .badge,.method-tag,.demo-mark,.search-input,.btn,
   .toolbar,.demo-banner,.group-title,.paper-body,.paper-figure{
     border:1px solid CanvasText;
   }

@@ -12,15 +12,12 @@
   var elStatsInline = document.getElementById('stats-inline');
   var elToolbar = document.getElementById('toolbar');
   var elSearch = document.getElementById('search');
-  var elChips = document.getElementById('chips');
   var elStatus = document.getElementById('status');
   var elResults = document.getElementById('paper-results');
   var elEmptyFilter = document.getElementById('empty-filter');
   var elEmptyLibrary = document.getElementById('empty-library');
 
   var PAPERS = [];
-  var CHIPS = [];
-  var activeChip = null;
   var debounceTimer = null;
 
   function warn(msg, p) {
@@ -335,70 +332,12 @@
     return tokens.every(function (t) { return h.indexOf(t) !== -1; });
   }
 
-  function matchesChip(p) {
-    if (!activeChip || activeChip.key === 'all') return true;
-    if (activeChip.key === '__code__') return p.codeUrl !== null;
-    return p.tags.indexOf(activeChip.key) !== -1;
-  }
-
-  // ≤8 chips：全部(1) + 高频标签(至多 6) + 有代码(第 8 位)。
-  // 按频次降序取 Top 7 后，受 ≤8 上限裁到 6 个，保留「全部」在首、「有代码」在末。
-  function buildChips(papers) {
-    var freq = {};
-    WHITELIST.forEach(function (t) { freq[t] = 0; });
-    papers.forEach(function (p) {
-      p.tags.forEach(function (t) { if (freq[t] !== undefined) freq[t] += 1; });
-    });
-    var ranked = WHITELIST.filter(function (t) { return freq[t] > 0; })
-      .sort(function (a, b) {
-        if (freq[b] !== freq[a]) return freq[b] - freq[a];
-        return WHITELIST.indexOf(a) - WHITELIST.indexOf(b);
-      });
-    var top7 = ranked.slice(0, 7);
-    var tagChips = top7.slice(0, 6);
-
-    var chips = [{ label: '全部', key: 'all', count: papers.length }];
-    tagChips.forEach(function (t) {
-      chips.push({
-        label: t, key: t,
-        count: papers.filter(function (p) { return p.tags.indexOf(t) !== -1; }).length
-      });
-    });
-    chips.push({
-      label: '有代码', key: '__code__',
-      count: papers.filter(function (p) { return p.codeUrl !== null; }).length
-    });
-    return chips;
-  }
-
-  function renderChips() {
-    elChips.textContent = '';
-    CHIPS.forEach(function (chip) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'chip';
-      b.setAttribute('aria-pressed', String(activeChip.key === chip.key));
-      var lab = document.createElement('span');
-      lab.className = 'chip-label';
-      lab.textContent = chip.label;
-      var cnt = makeNumSpan(chip.count, 'chip-count');
-      b.appendChild(lab);
-      b.appendChild(cnt);
-      b.addEventListener('click', function () {
-        activeChip = chip;
-        renderChips();
-        render();
-      });
-      elChips.appendChild(b);
-    });
-  }
-
   function renderStatus(n) {
     elStatus.textContent = '';
     elStatus.appendChild(makeTextNode('找到 '));
     elStatus.appendChild(makeNumSpan(n, 'status-count'));
     elStatus.appendChild(makeTextNode(' 篇'));
-    if (activeChip.key !== 'all' || getTokens().length) {
+    if (getTokens().length) {
       elStatus.appendChild(makeDot());
       elStatus.appendChild(makeTextNode('已筛选'));
     }
@@ -486,7 +425,7 @@
   function render() {
     var tokens = getTokens();
     var visible = PAPERS.filter(function (p) {
-      return matchesQuery(p, tokens) && matchesChip(p);
+      return matchesQuery(p, tokens);
     });
     renderStatus(visible.length);
     renderResults(visible);
@@ -519,7 +458,7 @@
       if (e.key === 'Enter') {
         e.preventDefault();
       } else if (e.key === 'Escape') {
-        elSearch.value = ''; // 清词但保留 chip
+        elSearch.value = ''; // 清空搜索词
         if (debounceTimer) clearTimeout(debounceTimer);
         render();
       }
@@ -528,11 +467,7 @@
       elSearch.value = '';
       if (debounceTimer) clearTimeout(debounceTimer);
       render();
-    });
-    document.getElementById('reset-filter').addEventListener('click', function () {
-      activeChip = CHIPS[0];
-      renderChips();
-      render();
+      elSearch.focus();
     });
   }
 
@@ -551,9 +486,6 @@
       return;
     }
 
-    CHIPS = buildChips(PAPERS);
-    activeChip = CHIPS[0];
-    renderChips();
     render();
     bindEvents();
   }

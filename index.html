@@ -26,13 +26,12 @@
     </div>
   </header>
 
-  <div id="toolbar" class="toolbar">
+  <div id="toolbar" class="toolbar" role="search">
     <div class="toolbar-inner">
       <div class="search-wrap">
         <label class="sr-only" for="search">搜索论文</label>
         <input id="search" class="search-input" type="search" placeholder="搜索标题、作者、标签或点评" aria-label="搜索论文" aria-controls="paper-results" autocomplete="off" spellcheck="false">
       </div>
-      <div id="chips" class="chips" role="group" aria-label="筛选标签"></div>
     </div>
   </div>
 
@@ -43,7 +42,6 @@
       <p class="empty-filter-text">没有符合条件的论文。</p>
       <div class="empty-filter-actions">
         <button type="button" class="btn" id="clear-search">清空搜索</button>
-        <button type="button" class="btn" id="reset-filter">重置筛选</button>
       </div>
     </div>
     <div id="empty-library" class="empty-library" hidden>
